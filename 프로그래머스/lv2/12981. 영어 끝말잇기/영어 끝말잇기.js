@@ -8,8 +8,7 @@ function solution(n, words) {
         if(map.get(word) || lastWord[lastWord.length-1] !== word[0]){
 
             const number = ((i+1)%n) ===0 ? n : ((i+1)%n)
-            const count = Math.floor((i+1)/n) < (i+1)/n ? Math.floor((i+1)/n)+1 : Math.floor((i+1)/n)
-            
+            const count = Math.ceil((i+1)/n)
             return [number, count]
         }else{
             lastWord = word
