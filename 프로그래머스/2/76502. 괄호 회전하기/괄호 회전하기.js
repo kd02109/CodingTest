@@ -3,10 +3,10 @@ function solution(s) {
 
     var answer = 0;
     for(let i=0; i<s.length; i++){
-        if(check([...arr])) answer +=1
+        if(check([...arr])) answer +=1;
 
-        const arrSlice = arr.slice(1)
-        arr = [...arrSlice, arr[0]]
+        const arrSlice = arr.slice(1);
+        arr = [...arrSlice, arr[0]];
         
     }
     return answer;
@@ -16,7 +16,7 @@ function solution(s) {
 function check (arr) {
     
     const value = arr[0];
-    if(value === "}" || value === "]" || value === ")") return false
+    if(value === "}" || value === "]" || value === ")") return false;
 
     const queue = [];
     
@@ -30,11 +30,14 @@ function check (arr) {
         }
         
         
-        if(brick === "]" && lastValue ==="[") queue.pop()
-        else if(brick === "}" && lastValue ==="{") queue.pop()
-        else if(brick === ")" && lastValue ==="(") queue.pop()
-        else queue.push(brick)
+        if(brick === "]" && lastValue ==="[") queue.pop();
+        else if(brick === "}" && lastValue ==="{") queue.pop();
+        else if(brick === ")" && lastValue ==="(") queue.pop();
+        else {
+            queue.push(brick);
+            break;    
+        }
     }
     
-    return queue.length === 0
+    return queue.length === 0;
 }
