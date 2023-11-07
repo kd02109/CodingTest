@@ -4,7 +4,7 @@ function solution(citations) {
     const {length} = sort
     for(let i=0; i<length; i++){
         if(sort[i] > i) answer = i+1
-        else if(sort[i] === i) answer = i
+        //else if(sort[i] === i) answer = i
     }
     return answer;
 }
