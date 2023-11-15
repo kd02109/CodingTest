@@ -43,7 +43,6 @@ function solution(msg) {
                 OBJ[nextChar] = num
                 break
             }
-            if(msg[i+next] === undefined) break
             char = nextChar
             next+=1
             nextChar = nextChar+msg[i+next]
