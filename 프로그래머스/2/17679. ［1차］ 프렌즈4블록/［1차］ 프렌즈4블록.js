@@ -25,7 +25,8 @@ function solution(m, n, board) {
 
         // 재정렬
         for (let i = m - 1; i > 0; i--) {
-            if (! board[i].some(v => ! v)) continue;
+            // 해당 위치에 블록이 하나라도 있는지 확인
+            if (!board[i].some(v => v===0)) continue;
 
             for (let j = 0; j < n; j++) {
                 for (let k = i - 1; k >= 0 && ! board[i][j]; k--) {
