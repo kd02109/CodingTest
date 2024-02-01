@@ -1,43 +1,27 @@
 function solution(s) {
-    let arr = [...s];
-
-    var answer = 0;
-    for(let i=0; i<s.length; i++){
-        if(check([...arr])) answer +=1;
-
-        const arrSlice = arr.slice(1);
-        arr = [...arrSlice, arr[0]];
-        
+    let answer = 0;
+    let arr = [...s]
+    for(let i=0; i<arr.length; i+=1){
+        if(check(arr)) answer +=1;
+        arr = [...arr.slice(1),arr[0]];
     }
-    return answer;
+    return answer
 }
-
-
-function check (arr) {
     
-    const value = arr[0];
-    if(value === "}" || value === "]" || value === ")") return false;
-
-    const queue = [];
-    
-
-    while(arr.length>0){
-        const brick = arr.shift();
-        const lastValue = queue[queue.length-1];
-        if(brick === "[" || brick === "(" || brick === "{" ) {
-            queue.push(brick);
-            continue;
-        }
-        
-        
-        if(brick === "]" && lastValue ==="[") queue.pop();
-        else if(brick === "}" && lastValue ==="{") queue.pop();
-        else if(brick === ")" && lastValue ==="(") queue.pop();
-        else {
-            queue.push(brick);
-            break;    
+function check(arr){
+    const checkArr = [...arr];
+    const stack = []
+    while(checkArr.length){
+        const value = checkArr.shift();
+        if(value === "[" || value === "(" || value === "{") stack.push(value);
+        else if(stack[stack.length-1] === "[" && value ==="]") stack.pop();
+        else if(stack[stack.length-1] === "(" && value ===")") stack.pop();
+        else if(stack[stack.length-1] === "{" && value ==="}") stack.pop();
+        else{
+            stack.push(value);
+            break;
         }
     }
-    
-    return queue.length === 0;
+    return stack.length === 0 ? true : false;
 }
+
