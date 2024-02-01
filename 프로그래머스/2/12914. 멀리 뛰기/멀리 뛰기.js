@@ -1,10 +1,9 @@
 function solution(n) {
-    const maxcounts = Array.from({length: n+1}, ()=>0);
-    maxcounts[1] = 1
-    maxcounts[2] = 2
-    
-    for(let i=3; i<maxcounts.length; i+=1){
-        maxcounts[i] = (maxcounts[i-2] + maxcounts[i-1])%1234567 ;
+    const boxes = Array.from({length:n+1}, ()=>0);
+    boxes[0] = 1;
+    boxes[1] = 1;
+    for(let i=2; i<=n; i++){
+        boxes[i] = (boxes[i-2]+boxes[i-1])%1234567
     }
-    return maxcounts[n];
+    return boxes[n]
 }
