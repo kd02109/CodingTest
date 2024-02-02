@@ -30,22 +30,23 @@ const OBJ = {
 let num = 26
 
 function solution(msg) {
-    const answer = []
-    let next = 1
+    const answer = [];
+    let next = 1;
     for(let i=0; i<msg.length; i+=next){
-        next = 1
+        next = 1;
         let char = msg[i]
-        let nextChar = char + msg[i+1]
+        let nextChar = char + msg[i+next];
+
         while(true){
-            if(OBJ[char] && !OBJ[nextChar]) {
-                answer.push(OBJ[char])
-                num += 1
-                OBJ[nextChar] = num
-                break
+            if(OBJ[char] && !OBJ[nextChar]){
+                num += 1;
+                OBJ[nextChar] = num;
+                answer.push(OBJ[char]);
+                break;
             }
-            char = nextChar
-            next+=1
-            nextChar = nextChar+msg[i+next]
+            next += 1;
+            char = nextChar;
+            nextChar += msg[i+next];
         }
     }
     return answer
