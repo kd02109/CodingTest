@@ -1,10 +1,9 @@
 function solution(citations) {
     let answer = 0;
-    const sort = [...citations].sort((a,b)=> b-a);
-    const {length} = sort
-    for(let i=0; i<length; i++){
-        if(sort[i] > i) answer = i+1
-        //else if(sort[i] === i) answer = i
+    const len = citations.length;
+    citations.sort((a,b)=> b-a);
+    for(let i=0; i<len; i+=1){
+        if(citations[i] > i) answer += 1;
     }
     return answer;
 }
