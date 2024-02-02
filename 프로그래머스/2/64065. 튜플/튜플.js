@@ -1,14 +1,11 @@
 function solution(s) {
-    const sArr = s.split(/[\{\}\,]/);
-    const arr =  sArr.filter((item)=> item !== '').map(item => Number(item));
-
-    const set = new Set(arr);
-    const size = Array.from({length: set.size+1}, ()=>0)
+    const arr = s.replace(/[{}]/g, "").split(",")
+    const map = new Map()
+    arr.forEach(value => {
+        if(map.has(value)) map.set(value, map.get(value)+1);
+        else map.set(value,1)
+    })
+    const answer = [...map].sort((a,b)=> b[1]-a[1]).map(item => Number(item[0]));
+    return answer
     
-    const obj = {}
-    for(let el of arr){
-        obj[el] ? obj[el] +=1 : obj[el] =1  
-    }
-    const entry = Object.entries(obj).sort((a,b) => b[1]-a[1]);
-    return entry.map(([item, _])=> Number(item));
 }
