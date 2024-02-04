@@ -1,14 +1,14 @@
 function solution(word) {
-    const answer = [];
-    const alpha = ["A", "E", "I", "O", "U"];
-    function dfs(str){
-        answer.push(str)
-        if(str.length === alpha.length) return;
-        for(let i =0 ; i<alpha.length; i++){
-            dfs(str+alpha[i])
-        }      
+  const words = ['A', 'E', 'I', 'O', 'U'];
+  const sets = [];
+  function dfs(answer) {
+    sets.push(answer);
+    if (answer.length >= 5) return;
+    for (let i = 0; i < words.length; i++) {
+      dfs(answer + words[i]);
     }
-    dfs("");
+  }
+  dfs('');
 
-    return answer.indexOf(word);
+  return sets.indexOf(word);
 }
