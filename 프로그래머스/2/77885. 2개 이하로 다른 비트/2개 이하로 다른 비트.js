@@ -1,20 +1,19 @@
 function solution(numbers) {
-    const answers =[];
+    const answer = [];
     numbers.forEach(num => {
-        if(num%2 === 1) {
+        if(num%2 === 0) answer.push(num+1);
+        else{
             const bit = num.toString(2);
-            const zeroIdx = bit.lastIndexOf("0")
-            
+            const zeroIdx = bit.lastIndexOf('0')
+            let newBit = ""
             if(zeroIdx === -1){
-                answers.push(Number.parseInt("10"+bit.slice(1),2))    
+                newBit = "10"+bit.slice(1);
             }else{
-                answers.push(Number.parseInt(bit.slice(0,zeroIdx)+"10"+bit.slice(zeroIdx+2),2))    
+                newBit = bit.slice(0,zeroIdx) + "10" + bit.slice(zeroIdx+2)
             }
-        }
-        else {
-            answers.push(num + 1);
+            const changeNum = parseInt(newBit,2);
+            answer.push(changeNum)
         }
     })
-    
-    return answers;
+    return answer
 }
