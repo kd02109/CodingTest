@@ -1,40 +1,37 @@
 function solution(m, n, board) {
-   board = board.map(row => row.split(''));
-    
-    
+    const boards = board.map(item => item.split(''));
     while(true){
-        const blocks = []
-        for(let i=0; i<m-1; i++){
-            for(let j=0; j<n-1; j++){
-                    if(board[i][j] && board[i][j] === board[i+1][j] && board[i][j] === board[i][j+1] && board[i][j] === board[i][j] && board[i][j] === board[i+1][j+1]) blocks.push([i,j])
+        const place = [];
+        for(let i=0; i<m-1; i+=1){
+            for(let j=0; j<n-1; j+=1){
+                const base = boards[i][j]
+                if(base === boards[i+1][j] && base === boards[i][j+1] && base === boards[i+1] [j+1] && base !== 0){
+                    place.push([i,j]);
+                }
             }
         }
-      
-        if(blocks.length === 0){
-            console.log(board)
-            return board.flat().filter(row => !row).length
-        }
         
-        blocks.forEach(block => {
-            const [i,j] = block
-            board[i][j] = 0
-            board[i+1][j] = 0
-            board[i][j+1] = 0
-            board[i+1][j+1] = 0
+        if(place.length === 0) break;
+        
+        place.forEach(item => {
+            const [x,y] = item;
+            boards[x][y] = 0;
+            boards[x+1][y] = 0;
+            boards[x][y+1] = 0;
+            boards[x+1][y+1] = 0;
         })
         
-        
-        for(let i = m-1 ; i>0; i--){
-            for(let j=0; j<n; j++){
-                for(let k=i-1; k>=0; k--){
-                    if(!board[i][j] && board[k][j]){
-                        board[i][j] = board[k][j]
-                        board[k][j] = 0
+        for(let i=m-1; i>0; i-=1){
+            for(let j=0; j<n; j+=1){
+                for(let k=i-1; k>=0 && !boards[i][j]; k-=1){
+                    if(boards[k][j]){
+                        boards[i][j] = boards[k][j];
+                        boards[k][j] = 0;
                         break;
                     }
                 }
             }
         }
     }
-
+    return boards.flat().filter(item => item ===0).length
 }
