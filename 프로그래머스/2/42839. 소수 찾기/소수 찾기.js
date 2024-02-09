@@ -1,44 +1,34 @@
-function isPrime(num) {
-  num = Number(num);
-  if (num <= 1) return false;
-
-  let flag = true;
-  for (let i = 2; i * i <= num; i += 1) {
-    if (num % i === 0) {
-      flag = false;
-      break;
+function checkPrime(num){
+    if(num < 2) return false;
+    const sqrt = Math.sqrt(num);
+    let isPrime = true;
+    for(let i=2; i<=sqrt; i+=1){
+        if(num % i === 0){
+            isPrime = false;
+            break;
+        }
     }
-  }
-
-  return flag;
+    return isPrime
 }
 
 function solution(numbers) {
-  numbers = numbers.split('');
-  const answer = [];
-  const visited = Array.from({ length: numbers.length }, () => 0);
-
-  function dfs(layer, size, arr) {
-    if (layer === size) {
-      const num = Number(arr.join(''));
-      if (isPrime(num)) answer.push(num);
-      return;
+    numbers = numbers.split('');
+    const numberSet = [];
+    const visited = Array.from({length: numbers.length}, ()=> 0);
+    function dfs(num,layer){
+        if(layer > numbers.length) return;
+        if(!numberSet.includes(num) && num !== "") numberSet.push(num);
+        for(let i=0; i<numbers.length; i+=1){
+            if(!visited[i]){
+                visited[i] = true;
+                dfs(num+numbers[i], layer+1);
+                visited[i] = false;
+            }
+        }
     }
-    for (let i = 0; i < numbers.length; i += 1) {
-      if (!visited[i]) {
-        visited[i] = 1;
-        arr[layer] = numbers[i];
-        dfs(layer + 1, size, arr);
-        visited[i] = 0;
-      }
-    }
-  }
-
-  for (let i = 1; i <= numbers.length; i += 1) {
-    const tmp = Array.from({ length: i }, () => 0);
-    dfs(0, i, tmp);
-  }
-
-  const count = new Set(answer);
-  return count.size;
+    dfs("",0)
+    const nums = [...new Set(numberSet.map(num => Number(num)))];
+    const answer = nums.filter(checkPrime).length
+    return answer
 }
+
