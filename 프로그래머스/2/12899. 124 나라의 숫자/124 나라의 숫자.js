@@ -1,15 +1,13 @@
 function solution(n) {
-    const arr = ["4","1", "2"]
-    let answer = ""
-    while(n != 0){
-        const idx = n%3;
-        n = Math.floor(n/3);
-        if(idx === 0){
-            n -= 1;
+    const num = ["4","1","2"];
+    let answer = ''
+    while(n > 0){
+        answer =  num[n%3] + answer
+        if(n%3 === 0){
+            n = Math.floor(n/3)-1
+        }else{
+            n = Math.floor(n/3)
         }
-        answer = arr[idx]+answer
-        
     }
     return answer
 }
-
