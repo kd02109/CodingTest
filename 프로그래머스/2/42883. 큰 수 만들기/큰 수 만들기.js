@@ -1,15 +1,15 @@
 function solution(number, k) {
-    const arr = number.split('').map(item => Number(item));
-    const answer = []
-    arr.forEach((num)=>{
-        while(k>0 && answer.length >0 && answer[answer.length-1] < num ){
-            k -= 1;
+    const nums = number.split('').map(item => Number(item));
+    const answer = [];
+    
+    nums.forEach(num => {
+        while(answer.length && k>0 && answer[answer.length-1] < num){
             answer.pop();
+            k -= 1;
         }
         answer.push(num);
     })
-    console.log(answer)
-    return answer.join('').slice(0, number.length-k)
+    return answer.slice(0, number.length-k).join('');
 }
 
 
