@@ -1,13 +1,14 @@
 function solution(number, k) {
+    const arr = number.split('').map(item => Number(item));
     const answer = []
-    for(let num of number){
-        while(answer.length > 0 && k>0 && answer[answer.length-1] < num){
-            answer.pop();
+    arr.forEach((num)=>{
+        while(k>0 && answer.length >0 && answer[answer.length-1] < num ){
             k -= 1;
+            answer.pop();
         }
-        answer.push(num)
-    }
-    
+        answer.push(num);
+    })
+    console.log(answer)
     return answer.join('').slice(0, number.length-k)
 }
 
