@@ -1,16 +1,15 @@
 function solution(priorities, location) {
-  let base = priorities.map((prioryty, idx) => [prioryty, idx]);
-  let count = 0;
-  while (true) {
-    const first = base[0];
-    const others = base.slice(1);
-    if (others.every((value) => value[0] <= first[0])) {
-      count += 1;
-      base = others;
-      if (first[1] === location) break;
-    } else {
-      base = [...others, first];
+    const priority = priorities.map((item, idx) => [item,idx])
+    const queue = [];
+    
+    while(priority.length){
+        const [item,idx] = priority.shift();
+        if(priority.some(el => el[0] >item)){
+            priority.push([item,idx])
+        }else{
+            queue.push([item,idx])
+        }
     }
-  }
-  return count;
+
+    return queue.findIndex(item => item[1] === location) + 1
 }
