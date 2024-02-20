@@ -1,17 +1,16 @@
 function solution(ingredient) {
-    const stack = []
     let answer = 0;
-    
-    for(let i=0; i<ingredient.length; i++){
-        stack.push(ingredient[i])
-        const hamberger = stack.slice(-4).join('')
-        if(hamberger === '1231'){
-            answer +=1;
+    const stack = []
+    const reversedIngredient = ingredient.reverse()
+    while(ingredient.length){
+        stack.push(ingredient.pop());
+        if(stack.length >=4 && stack.slice(stack.length-4).join('') === "1231"){
             stack.pop();
             stack.pop();
             stack.pop();
             stack.pop();
+            answer += 1;
         }
     }
-    return answer
+    return answer;
 }
