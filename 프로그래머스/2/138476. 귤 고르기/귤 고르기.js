@@ -1,17 +1,20 @@
 function solution(k, tangerine) {
-    const map = new Map();
-    tangerine.forEach(kg => {
-        if(map.has(kg)) map.set(kg, map.get(kg)+1);
-        else map.set(kg, 1)
+    const obj = {}
+    tangerine.forEach(orange => {
+        if(obj[orange]) obj[orange] += 1;
+        else obj[orange] = 1;
     })
-    const arr = [...map].sort((a,b)=> b[1]-a[1]);
+    const values = Object.values(obj)
+    values.sort((a,b)=> b-a);
     
+    
+    let sum = 0;
     let answer = 0;
-    let count = 0;
-    for(let i=0; i<arr.length; i++){
-        count += arr[i][1];
+    for(let i=0; i<values.length; i+=1){
+        if(sum >= k) break;
+        sum += values[i];
         answer += 1;
-        if(count >= k) break;
     }
-    return answer;
+    
+    return answer
 }
