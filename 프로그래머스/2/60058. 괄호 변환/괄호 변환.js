@@ -2,21 +2,24 @@ function solution(p) {
     if(p === "") return ""
     
     let [u,v] = ["",""]
-    let [a,b] = [0,0]
-    
-    for(let i=0; i<p.length; i++){
-        p[i] === "(" ? a+=1 : b+=1;
-        u += p[i]
-        if(a===b){
-            v=p.slice(i+1, p.length)
-            break
-        }   
+    let first = 0;
+    let end = 0;
+    for(let i=0; i<p.length; i+=1){
+        u += p[i];
+        if(p[i] === "(") first += 1;
+        if(p[i] === ")") end += 1;
+        if(first === end) break
     }
-    console.log(u,v)
-    if(u[u.length-1] === ")") return u+solution(v)
+    v = p.slice(first+end)
+
+    if(u[0] === "(") return u + solution(v)
     else{
-        u= u.slice(1,u.length-1).split('')
-        for (let i = 0; i < u.length; i += 1) u[i] = u[i] === `)` ? `(` : `)`
-        return `(${solution(v)})`+u.join('')
+        let newU = ""
+        for(let i=1; i<u.length-1; i+=1){
+            const base = u[i]
+            newU += base === "(" ? ")" : "("
+        }
+        return `(${solution(v)})`+newU
     }
 }
+//solution("(())))((())(()")
