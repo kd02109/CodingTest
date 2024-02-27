@@ -1,11 +1,10 @@
 function solution(n, left, right) {
-    const answer = []
-    const arr = Array.from({length:n}, (_,idx)=>idx+1);
-
-    for(let i=left; i<=right; i++){
-        const value = Math.floor(i/n);
-        const paste = i%n
-        value >= paste? answer.push(arr[value]) : answer.push(arr[paste])
+    const nums = Array.from({length:n}, (_,idx)=>idx+1);
+    const answer = [];
+    
+    for(let i=left; i<=right; i+=1){
+        const max = Math.max(Math.floor(i/n), i%n); 
+        answer.push(nums[max]);
     }
-    return answer
+    return answer;
 }
