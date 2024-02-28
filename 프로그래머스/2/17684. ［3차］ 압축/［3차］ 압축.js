@@ -1,53 +1,28 @@
-const OBJ = {
-    A: 1,
-    B : 2,
-    C : 3,
-    D : 4,
-    E : 5,
-    F : 6,
-    G : 7,
-    H : 8,
-    I : 9,
-    J : 10,
-    K : 11,
-    L : 12,
-    M : 13,
-    N: 14,
-    O: 15,
-    P:16,
-    Q:17,
-    R:18,
-    S: 19,
-    T:20,
-    U:21,
-    V:22,
-    W:23,
-    X:24,
-    Y:25,
-    Z:26,
-}
-
-let num = 26
-
 function solution(msg) {
+    const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').reduce((acc,cur,idx)=>{
+        acc[cur] = idx+1
+        return {...acc}
+    },{})
+    
     const answer = [];
     let next = 1;
+    let num = 27;
+    
     for(let i=0; i<msg.length; i+=next){
-        next = 1;
+        next = 1
         let char = msg[i]
-        let nextChar = char + msg[i+next];
-
+        let nextChar = char + msg[i+next]
         while(true){
-            if(OBJ[char] && !OBJ[nextChar]){
-                num += 1;
-                OBJ[nextChar] = num;
-                answer.push(OBJ[char]);
+            if(alpha[char] && !alpha[nextChar]){
+                answer.push(alpha[char]);
+                alpha[nextChar] = num;
+                num+=1;
                 break;
             }
             next += 1;
             char = nextChar;
-            nextChar += msg[i+next];
+            nextChar = char+msg[i+next];
         }
     }
-    return answer
+    return answer;
 }
