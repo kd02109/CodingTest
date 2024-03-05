@@ -1,6 +1,9 @@
 function solution(numbers) {
-    const answer = numbers.map(num=> `${num}`).sort((a,b)=>{
-        return (b+a) - (a+b)
+    numbers.sort((a,b)=> {
+        const num = String(a) + String(b);
+        const num2 = String(b) + String(a);
+        return Number(num2) - Number(num)
     })
-    return answer[0] === "0"? "0" : answer.join('')
+    if(numbers[0] === 0) return "0"
+   return numbers.join('')
 }
