@@ -1,28 +1,30 @@
 function solution(arr) {
     const answer = [0,0];
-   
-    function dfs(row, col, half){
-      let flag = true;
-      const base = arr[row][col]
-      for(let i=row; i<row+half; i+=1){
-          for(let j=col; j<col+half; j+=1){
-              if(arr[i][j] !== base) {
-                  flag = false;
-                  break;
-              }
-          }
-          if(!flag) break;
-      }
-       half /= 2;
-        if(!flag){
-            dfs(row, col, half);
-            dfs(row+half, col, half);
-            dfs(row, col+half, half);
-            dfs(row+half, col+half, half);
-        }else{
-            arr[row][col] === 1 ? answer[1] += 1 : answer[0] += 1
+    function dfs(rowStart, colStart, rowEnd, colEnd){
+        const base = arr[rowStart][colStart];
+        let flag = true;
+        
+        for(let i = rowStart; i<rowEnd; i+=1){
+            for(let j = colStart; j<colEnd; j+=1){
+                if(base !== arr[i][j] ){
+                    flag = false;
+                    break;
+                }
+            }
         }
+        
+        if(flag){
+            answer[base] += 1;
+            return;
+        }
+        
+        const half = (rowEnd - rowStart) / 2;
+        dfs(rowStart, colStart, rowEnd - half, colEnd - half);
+        dfs(rowStart, colStart + half, rowEnd - half, colEnd);
+        dfs(rowStart + half, colStart, rowEnd, colEnd - half);
+        dfs(rowStart + half, colStart + half, rowEnd, colEnd);
     }
-    dfs(0,0, arr.length);
-    return answer
+    dfs(0,0, arr.length, arr.length);
+    
+    return answer;
 }
