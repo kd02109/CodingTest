@@ -1,13 +1,11 @@
 function solution(n) {
-    const num = ["4","1","2"];
-    let answer = ''
+    const num = ["4", "1", "2"];
+    let answer = "";
     while(n > 0){
-        answer =  num[n%3] + answer
-        if(n%3 === 0){
-            n = Math.floor(n/3)-1
-        }else{
-            n = Math.floor(n/3)
-        }
+        const idx = n % 3
+        answer = num[idx] + answer;
+        n = Math.floor(n/3);
+        if( idx === 0) n = n - 1;
     }
-    return answer
+    return answer;
 }
