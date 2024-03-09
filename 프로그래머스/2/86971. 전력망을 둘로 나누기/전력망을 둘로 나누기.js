@@ -1,26 +1,34 @@
 function solution(n, wires) {
+    let count = 1;
     let answer = Infinity;
-    let count = 0;
-    while(count < wires.length){
-        const [node1, node2] = wires.shift();
-        answer = Math.min(answer, Math.abs(bfs(node1, wires) - bfs(node2, wires)));
-        wires.push([node1,node2]);
+    while(count <=n){
+        const [node1, node2] = wires.pop();
+        answer = Math.min(Math.abs(bfs(node1, wires) - bfs(node2, wires)), answer); 
+        wires.unshift([node1, node2])
         count += 1;
     }
     
     function bfs(node, wires){
+        let len = 1;
+        const visited = [node];
         const queue = [node];
-        const visited = [];
         while(queue.length){
-            const root = queue.pop();
+            const start = queue.pop();
             wires.forEach(wire => {
-                if(wire[0] === root && !visited.includes(wire[1])) queue.push(wire[1]);
-                if(wire[1] === root && !visited.includes(wire[0])) queue.push(wire[0]);
+                const [node1, node2] = wire;
+                if(node1 === start && !visited.includes(node2)){
+                    queue.push(node2)
+                    len += 1;
+                    visited.push(node2)
+                }
+                else if(node2 === start && !visited.includes(node1)){
+                    queue.push(node1)
+                    len += 1;
+                    visited.push(node1)
+                }
             })
-            visited.push(root);
         }
-      
-        return visited.length;
+        return len;
     }
     return answer;
 }
