@@ -1,49 +1,34 @@
-function timeCalculate(n1, n2) {
-  const temp1 = n1.split(":").map(v => parseInt(v));
-  const temp2 = n2.split(":").map(v => parseInt(v));
-
-  const first = temp1[0] * 60 + temp1[1];
-  const second = temp2[0] * 60 + temp2[1];
-
-  return second - first;
+function changeShop(m){
+    return m.replaceAll("C#", "H").replaceAll("D#", "I").replaceAll("F#","J").replaceAll("G#", "K").replaceAll("A#", "L").replaceAll("B#","M")
 }
 
-function change(str){
-    str = str.replace(/C#/gi, "Z");
-    str = str.replace(/D#/gi, "X");
-    str = str.replace(/F#/gi, "V");
-    str = str.replace(/G#/gi, "N");
-    str = str.replace(/A#/gi, "M");
-    return str
+function changeMinutes(start, end){
+    const [startH, startM] = start.split(":").map(item => Number(item));
+    const [endH, endM] = end.split(":").map(item => Number(item));
+    return (endH*60 + endM)-(startH*60 + startM)    
 }
-
 
 function solution(m, musicinfos) {
-    m = change(m)
-    let answer =[]
-    for(let i=0; i<musicinfos.length; i+=1){
-        let [start, end, title, music] = musicinfos[i].split(',')
-        music = change(music);
-        const playingTime = timeCalculate(start, end);
+    m = changeShop(m);
+    const answer = [];
+    musicinfos.forEach((musicinfo) => {
+        let [start, end ,title, music] = musicinfo.split(',');
+        const minute = changeMinutes(start, end);
+        music = changeShop(music);
 
-        if(music.length > playingTime){
-            music = music.slice(0,playingTime)
-        }else{
-            const quo = Math.floor(playingTime/music.length);
-            for (let i = 0; i < quo; i++) {
-                if (music.length > playingTime) break;
-                music += music;
-            }
-            music = music.slice(0, playingTime)
-        }
-        if (music.includes(m)) answer.push([title, playingTime]);
-    }
-
+        const rest =  minute % music.length;
+        const qu = Math.floor(minute / music.length);
+        let totalMusic = music.repeat(qu);
+        totalMusic += music.slice(0,rest);
+        if(totalMusic.includes(m)) answer.push([title, minute])
+    })
+    
     if(answer.length === 0) return "(None)"
-    answer.sort((a, b) => {
-      if (a[1] > b[1]) return -1;
-      if (a[1] === b[1]) return 0;
-      if (a[1] < b[1]) return 1;
-    });
-    return answer[0][0];
+    
+    answer.sort((a,b) => {
+        if(b[1]=== a[1]) return 0
+        return b[1] - a[1]
+    })
+    
+    return answer[0][0]
 }
