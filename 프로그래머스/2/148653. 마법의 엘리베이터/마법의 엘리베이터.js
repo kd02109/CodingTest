@@ -1,16 +1,15 @@
 function solution(storey) {
     let answer = Infinity;
-    
-    function dfs(storey, count){
+    function dfs(floor, count){
         if(count > answer) return;
-        if(storey === 0){
-            answer = Math.min(answer, count);
+        if(floor === 0){
+            answer = Math.min(count, answer);
             return;
         }
-        const res = storey%10
-        dfs(Math.floor(storey/10), count+res);
-        dfs(Math.floor(storey/10)+1, count + (10-res));
+        const rest = floor % 10;
+        dfs(Math.floor(floor/10), count+rest);
+        dfs(Math.floor(floor/10)+1, count+(10-rest));
     }
-    dfs(storey,0)
-    return answer
+    dfs(storey, 0)
+    return answer;
 }
