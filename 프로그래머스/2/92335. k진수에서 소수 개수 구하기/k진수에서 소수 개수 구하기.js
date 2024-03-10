@@ -1,17 +1,18 @@
-function solution(n, k) {
-    const change = n.toString(k);
-    let answer = 0;
-    const arr = change.split('0').map(item => Number(item)).filter(item => item !==1 && item !==0);
-    arr.forEach(item => {
-        if(checkPrime(item)) answer += 1
-    })
-    return answer
-}
-
-function checkPrime(num){  
+const checkPrime = (num) => {
     const sqrt = Math.sqrt(num);
     for(let i=2; i<=sqrt; i+=1){
         if(num%i === 0) return false;
     }
-    return true;
+    return true
 }
+
+function solution(n, k) {
+    const num = n.toString(k)
+    const arr = String(num).split('0').filter(item => Number(item) !== 1 && Number(item) !==0).map(item => Number(item))
+    let answer = 0;
+    arr.forEach(item => {
+        if(checkPrime(item)) answer += 1;
+    })
+    return answer
+}
+
