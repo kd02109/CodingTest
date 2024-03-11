@@ -1,23 +1,22 @@
 function solution(N, road, K) {
-    const minTime = Array.from({length: N+1}, ()=>Infinity);
-    const lines = Array.from({length : N+1}, ()=> []);
-    road.forEach(([node,node2,time])=>{
-        lines[node].push({to:node2, cost: time});
-        lines[node2].push({to:node, cost: time});
-    })
+    const visited = Array.from({length: N+1}, ()=>Infinity);
+    visited[1] = 0;
     
-    const queue = [{to:1, cost:0}];
-    minTime[1] = 0;
+    const qu = [[1,0]]
     
-    while(queue.length){
-        const {to} = queue.pop();
-        lines[to].forEach(next => {
-            if(minTime[next.to] > next.cost + minTime[to]){
-                minTime[next.to] = next.cost + minTime[to]
-                queue.push(next)
+    while(qu.length){
+        let [start, time] = qu.pop();
+        for(let i=0; i<road.length; i+=1){
+            const [base, end, len] = road[i];
+            if(start === base && visited[end] > len + time){
+                visited[end] = len + time;
+                qu.push([end, time+len])
             }
-        })
+            if(start === end && visited[base] > len + time){
+                visited[base] = len + time;
+                qu.push([base, time+len])
+            }
+        }
     }
-    return minTime.filter(item => item <=K).length
-
+    return visited.filter(value => value <= K).length
 }
