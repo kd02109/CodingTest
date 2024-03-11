@@ -1,35 +1,29 @@
 function checkPlace(place){
-    const map = place.map(item => item.split(''))
-
-    const queue = [];
-    
-    for(let i=0; i<5; i+=1){
-        for(let j=0; j<5; j+=1){
-            if(map[i][j] === "P") queue.push([i,j]) 
+    place = place.map(item => item.split(''));
+    const people = []
+    for(let i=0; i<place.length; i+=1){
+        for(let j=0; j<place.length; j+=1){
+            if(place[i][j] === "P") people.push([i,j]);
         }
     }
-
-    while(queue.length){
-        let [x,y] = queue.shift();
-        const dx = [0,-1,0,1];
-        const dy = [-1,0,1,0];
-        
+    const dx = [1,-1,0,0];
+    const dy = [0,0,1,-1]
+    while(people.length){
+        let [x,y] = people.pop();
         for(let i=0; i<dx.length; i+=1){
             let nx = x+dx[i];
             let ny = y+dy[i];
-            
-            if(nx<0 || nx >4 || ny<0 || ny >4) continue;
-            if(map[nx][ny] === "P") return 0;
-            if(map[nx][ny] === "X") continue;
-            
-
-            for(let j=0; j<dx.length; j+=1){
-                let nnx = nx + dx[j];
-                let nny = ny + dy[j]
-                
-                if(nnx<0 || nnx >4 || nny<0 || nny >4) continue;
-                if(nnx === x && nny === y) continue;
-                if(map[nnx][nny] === "P") return 0;
+            if(nx>=0 && nx<5 && ny>=0 && ny<5){
+                if(place[nx][ny] === "X") continue;
+                if(place[nx][ny] === "P") return 0;
+                for(let j=0; j<dx.length; j+=1){
+                    let nnx = nx + dx[j];
+                    let nny = ny + dy[j];
+                    if(nnx>=0 && nnx<5 && nny>=0 && nny<5){
+                        if(nnx === x && nny === y) continue;
+                        if(place[nnx][nny] === "P") return 0;
+                    }
+                }
             }
         }
     }
@@ -39,9 +33,8 @@ function checkPlace(place){
 
 function solution(places) {
     const answer = [];
-    
     places.forEach(place => {
-        answer.push(checkPlace(place));
-    });
+        answer.push(checkPlace(place))
+    })
     return answer;
 }
