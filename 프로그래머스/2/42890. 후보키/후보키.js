@@ -56,7 +56,7 @@ function solution(relation) {
     
     for(let i=0; i<combiSort.length; i+=1){
         let base= combiSort[i].join('')
-        if(checkUnique(combiSort[i]) && isMinimality(base, candidate)) candidate.push(combiSort[i].join(''));
+        if(checkUnique(combiSort[i]) && isMinimality(base, candidate)) candidate.push(base);
     }
 
     return candidate.length
