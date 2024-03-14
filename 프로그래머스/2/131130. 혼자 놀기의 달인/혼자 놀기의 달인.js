@@ -1,25 +1,21 @@
 function solution(cards) {
     cards = cards.map(num => num-1);
     
-    function bfs(card,cards,visited, idx){
-        const queue = [card]
-        visited[idx] = 1;
-        while(queue.length){
-            const card = queue.shift();
-            const next = cards[card];
-            if(!visited[card]){
-                queue.push(next)
-                visited[card] = 1
-            }
+    function bfs(idx,visited){
+        let count = 0;
+        while(!visited[idx]){
+            visited[idx] = 1;
+            idx = cards[idx];
+            count += 1;
         }
-        return visited.filter(item => !!item).length;
+        return count
     }
     
     let answer = 0;
     
     for(let i=0; i<cards.length; i+=1){
         const visited = Array.from({length: cards.length}, ()=>0);
-        const group1 = bfs(cards[i], cards, visited,i);
+        const group1 = bfs(i,visited);
         if(group1 === cards.length){
             answer = Math.max(answer, 0);
             continue;
@@ -28,8 +24,8 @@ function solution(cards) {
 
             if(!visited[j]){
                 const visited2 = [...visited];
-                const group2 = bfs(cards[j], cards, visited2,j);
-                answer = Math.max(group1 * (group2-group1), answer);
+                const group2 = bfs(j,visited);
+                answer = Math.max(group1 * group2, answer);
             }
         }
     }
