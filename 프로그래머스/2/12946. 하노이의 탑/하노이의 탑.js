@@ -1,11 +1,11 @@
 function solution(n) {
     const answer = [];
-    function hanoi(n,from,to,via){
+    function dfs(from, to, other, n){
         if(n === 0) return;
-        hanoi(n-1, from, via, to);
-        answer.push([from,to])
-        hanoi(n-1, via, to, from);
+        dfs(from,other,to,n-1);
+        answer.push([from, to]);
+        dfs(other, to, from, n-1)
     }
-    hanoi(n, 1, 3, 2)
+    dfs(1,3,2,n)
     return answer;
 }
