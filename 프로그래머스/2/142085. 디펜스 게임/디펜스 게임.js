@@ -37,15 +37,6 @@ class MaxHeap {
     let left = parent * 2;
     let right = parent * 2 + 1;
 
-    if (!this.heap[left]) return max;
-
-    if (!this.heap[right]) {
-      if (this.heap[left] > this.heap[parent]) {
-        this.swap(left, parent);
-      }
-      return max;
-    }
-
     while (this.heap[parent] < this.heap[left] || this.heap[parent] < this.heap[right]) {
       const maxIdx = this.heap[left] < this.heap[right] ? right : left;
       this.swap(maxIdx, parent);
@@ -58,17 +49,17 @@ class MaxHeap {
 }
 
 function solution(n, k, enemy) {
-  const heap = new MaxHeap();
-  let answer = 0;
-  for (let i = 0; i < enemy.length; i += 1) {
-    heap.push(enemy[i]);
-    n -= enemy[i];
-    if (n < 0) {
-      if (k === 0 || n + heap.getMax() < 0) return answer;
-      k -= 1;
-      n += heap.pop();
+    let answer = 0;
+    const maxHeap = new MaxHeap();
+    for(let i=0; i<enemy.length; i+=1){
+        maxHeap.push(enemy[i]);
+        n -= enemy[i]
+        if(n < 0){
+            if(k === 0 || n+maxHeap.getMax() < 0) return answer;
+            k -=1;
+            n += maxHeap.pop();
+        }
+        answer +=1;
     }
-    answer += 1;
-  }
-  return answer;
+    return answer
 }
