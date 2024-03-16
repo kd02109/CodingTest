@@ -1,48 +1,40 @@
 function solution(picks, minerals) {
-    let [dia, iron, stone] = picks;
-    let totalPicks = picks.reduce((acc,cur)=> acc+cur, 0);
+    let totalPick = picks.reduce((acc,cur) => acc + cur);
+    let [dia,iron, stone] = picks;
+    minerals = minerals.slice(0, totalPick * 5);
+    const tireds = [];
+    const obj = {diamond: 0, iron: 0, stone: 0}
     
-    if(totalPicks === 0) return 0;
-    
-    let tired = [];
-    const obj = {diamond : 0, iron: 0, stone: 0};
-    let answer = 0;
-    
-    for(let i=0; i < minerals.length; i+=5){
-        const slice = minerals.slice(i,i+5);
-        slice.forEach(mineral => {
-            obj[mineral] += 1;
+    for(let i=0; i<minerals.length; i+=5){
+        const mineralSet = minerals.slice(i,i+5);
+        const set = {...obj};
+        mineralSet.forEach(mineral => {
+            set[mineral]+=1; 
         })
-        tired.push([obj.diamond + obj.iron + obj.stone, obj.diamond*5 + obj.iron + obj.stone ,obj.diamond*25 + obj.iron*5 + obj.stone ])
-        obj.diamond = 0;
-        obj.iron = 0;
-        obj.stone = 0;
+        tireds.push([
+            set.diamond * 1 + set.iron * 1 + set.stone * 1,
+            set.diamond * 5 + set.iron * 1 + set.stone * 1,
+            set.diamond * 25 + set.iron * 5 + set.stone * 1,
+        ])
     }
     
-    if(totalPicks < tired.length) tired = tired.slice(0,totalPicks)
-    
-    tired.sort((a,b) => {
-        return a[2] - b[2];
+    tireds.sort((a,b) => {
+        return a[2]-b[2]
     })
-
     
-    while(tired.length !== 0 && totalPicks !== 0){
-        const value = tired.pop();
-        if(dia > 0){
+    let answer = 0;
+    while(tireds.length){
+        const mineralScore = tireds.pop();
+        if(dia){
             dia -=1;
-            totalPicks -=1;
-            answer += value[0]
-        }
-        else if(iron > 0){
+            answer += mineralScore[0]
+        }else if(iron){
             iron -=1;
-            totalPicks -=1;
-            answer += value[1]
-        }
-        else if(stone > 0) {
+            answer += mineralScore[1]
+        }else{
             stone -=1;
-            totalPicks -=1;
-            answer += value[2]
+            answer += mineralScore[2]
         }
     }
-    return answer;
+    return answer
 }
