@@ -1,39 +1,19 @@
-function float(num){
-    return Number.parseFloat(num).toFixed(1);
-}
-
 function solution(k, ranges) {
-    const arr = [];
-    const aria = [];
+    const collatz = [k];
+    const sum = [0];
+    while(k !== 1){
+        if(k%2 === 1) k= k * 3 + 1;
+        else k/=2;
+        collatz.push(k);
+    }
+    for(let i=1; i<collatz.length; i+=1){
+        sum[i] = sum[i-1] + ((collatz[i] + collatz[i-1])/2);
+    }
     const answer = [];
-    while(true){
-        arr.push(k)
-        if(k===1)break;
-        if(k%2 ===0){
-            k = k/2;
-        }
-        else{
-            k = k*3 + 1;
-        }
-    }
-    
-    for(let i=1; i<arr.length; i+=1){
-        const sum = arr[i] + (arr[i-1]-arr[i])/2
-        aria.push(sum)
-    }
-    
-    const len = arr.length - 1;
-    ranges.forEach(range => {
-        let [x1,x2] = [range[0], len + range[1]];
-        if(x1 > x2) answer.push(-1);
-        else if(x1 === x2) answer.push(0);
-        else {
-            let sum = 0.0;
-            for(let i=x1; i<x2; i+=1){
-                sum += aria[i]
-            }
-            answer.push(sum)
-        }
+    ranges.forEach(([start, end])=> {
+        end += collatz.length-1;
+        if(start > end) answer.push(-1);
+        else answer.push(sum[end] - sum[start])  ;
     })
-    return answer
+    return answer;
 }
