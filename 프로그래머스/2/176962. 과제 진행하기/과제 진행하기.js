@@ -1,20 +1,14 @@
 function solution(plans) {
-    const length = plans.length
-    plans = plans.map(([name, time, duration]) => [name, changeTime(time), Number(duration)]);
-    plans.sort((a,b) => b[1]-a[1]);
-
+    const sortPlans = plans.map(([name, time, count]) => [name, changeTime(time), Number(count)]).sort((a,b)=> b[1] - a[1]);
     const stack = [];
-    console.log(plans)
-    while(plans.length){
-        const [name, time, duration] = plans.pop();
-        stack.forEach((val, idx, arr) => {
-            if(time < val[1])  arr[idx][1] += duration
+    while(sortPlans.length){
+        const [name, time, count] = sortPlans.pop();
+        stack.forEach(([name, totalCount],idx,arr) => {
+            if(totalCount > time) arr[idx][1] += count;
         })
-        stack.push([name, time + duration]);
+        stack.push([name, time+count])
     }
-
-    const answer = stack.sort((a, b) => a[1] - b[1]).map(val => val[0]);
-    return answer;
+    return stack.sort((a,b)=> a[1]-b[1]).map(item => item[0])
 }
 
 const changeTime = (time) => {
