@@ -1,11 +1,18 @@
+// 6:09 ~ 6:15 
 function solution(s) {
-  const hash = {};
+    const frontCheck = {}
 
-  return s.split("").map((item, index) => {
-		// 객체에 해당 프로퍼티가 없다면 -1 있다면 index - value
-    let result = hash[item] === undefined ? -1 : index - hash[item];
-	 // 해당 철자와 인덱스를 프로퍼티로 저장.
-    hash[item] = index;
-    return result;
-  });
+    return s.split('').map((str,idx)=>{
+        if(frontCheck[str] !== undefined){
+            // 이미 존재하면 차이를 리턴하고 해당 idx로 갱신 
+            const frontDistance = idx - frontCheck[str]
+            frontCheck[str] = idx
+            return frontDistance
+        }
+        else{
+            // 없을경우 해당 idx로 처음 갱신
+            frontCheck[str] = idx
+            return -1
+        }
+    })
 }
