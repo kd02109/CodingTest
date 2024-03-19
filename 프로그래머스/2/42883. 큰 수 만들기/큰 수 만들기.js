@@ -1,15 +1,17 @@
 function solution(number, k) {
-    const nums = number.split('').map(item => Number(item));
-    const answer = [];
+    const stack = []
+    const numbers = number.split('').map(Number);
     
-    nums.forEach(num => {
-        while(answer.length && k>0 && answer[answer.length-1] < num){
-            answer.pop();
-            k -= 1;
+    for(let i=0; i<numbers.length; i+=1){
+        const num = numbers[i];
+        while(stack.length && stack[stack.length-1] < num && k>0){
+            stack.pop();
+            k -=1;
         }
-        answer.push(num);
-    })
-    return answer.slice(0, number.length-k).join('');
+        stack.push(num)
+    }
+   
+    return stack.slice(0,stack.length-k).join('')
 }
 
 
