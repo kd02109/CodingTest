@@ -1,21 +1,21 @@
 function solution(progresses, speeds) {
-    const answer = [];
-    const rest = progresses.map((progress,idx) => {
-        return Math.ceil((100-progress)/speeds[idx])
+    const days = progresses.map((item,idx) => {
+        const speed = speeds[idx]
+        return Math.ceil((100-item)/speed)
     })
-    rest.reverse();
-    let base = rest.pop();
-    let count = 1
-    while(rest.length > 0){
-        if(rest[rest.length-1] <= base){
-            count += 1;
-        }else {
-            answer.push(count);
-            base = rest[rest.length-1];
-            count = 1;
+    const answer = [];
+    let sum = 1;
+    let max = days[0];
+    for(let i=1; i<days.length; i+=1){
+        const day = days[i];
+        if(max >= day){
+            sum += 1;
+        }else{
+            answer.push(sum);
+            sum = 1;
+            max = day;
         }
-        rest.pop();
     }
-    answer.push(count);
+    answer.push(sum);
     return answer
 }
