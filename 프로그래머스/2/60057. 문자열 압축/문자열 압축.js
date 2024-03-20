@@ -1,29 +1,24 @@
 function solution(s) {
-    const {length} = s
-    let answer = length
-    for(let i = 1; i<=length/2; i++){
-        let base = 1;
-        let baseChar = s.slice(0,i)
-        let str = ""
-        let j = i;
-        for(j; j<length; j += i){
-            const nextChar = s.slice(j,j+i)
-            if(baseChar === nextChar){
-                base += 1;
+    let answer = s;
+    for(let i=1; i<=(s.length/2); i+=1){
+        let possible = ""
+        let base = s.slice(0,i);
+        let count = 1;
+        let next = ""
+        for(let j=i; j<s.length; j+=i){
+            next = s.slice(j, j+i)
+            if(base === next){
+                count += 1;
             }else{
-                str += base === 1? baseChar : `${base}${baseChar}`
-                baseChar = nextChar;
-                base = 1;
+                if(count === 1) possible += base;
+                else possible +=`${count}${base}`
+                base = next;
+                count = 1;
             }
         }
-        
-        if(base > 1){
-            str += `${base}${baseChar}`
-        }else{
-            str += s.slice(j-i,length)
-        }
-
-        answer = Math.min(str.length, answer)
+        if(count > 1) possible += `${count}${base}`
+        else possible += next
+        if(answer.length > possible.length) answer = possible;
     }
-    return answer
+    return answer.length
 }
