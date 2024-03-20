@@ -1,19 +1,17 @@
 function solution(bridge_length, weight, truck_weights) {
-    const bridge = Array.from({length:bridge_length},()=>0);
-    let bridgeWeight = 0;
-    let answer = 0;
+    let bridgeTotal = 0;
+    const bridge = Array.from({length: bridge_length}, ()=> 0);
+    let time = 0;
     while(truck_weights.length){
-        const outTruck = bridge.shift();
-        bridgeWeight = bridgeWeight - outTruck;
-        if(bridgeWeight+truck_weights[0] <= weight ){
+        bridgeTotal -= bridge.shift();
+        if(bridgeTotal+truck_weights[0] <= weight){
             const truck = truck_weights.shift();
-            bridgeWeight = bridgeWeight + truck
+            bridgeTotal += truck;
             bridge.push(truck);
         }else{
             bridge.push(0);
         }
-        answer += 1;
+        time += 1
     }
-
-    return answer + bridge_length;
+   return time + bridge.length;
 }
