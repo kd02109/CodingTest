@@ -1,21 +1,17 @@
 function solution(sequence, k) {
-    const answer = [0,sequence.length];
-    let start = 0;
-    let end = 0;
+    let answer = [0, sequence.length];
     let sum = 0;
-    for(end; end<sequence.length; end+=1){
-        sum +=sequence[end]
-        while(sum > k){
+    let start = 0;
+    
+    for(let i=0; i<sequence.length; i+=1){
+        sum += sequence[i];
+        while(sum > k && start < sequence.length){
             sum -= sequence[start];
-            start += 1
+            start += 1;
         }
         if(sum === k){
-            const [prevStart, prevEnd] = answer;
-            if(end-start <prevEnd-prevStart){
-                answer[0] = start;
-                answer[1] = end;
-            }
+            if(answer[1] - answer[0] > i-start) answer = [start,i];
         }
     }
-    return answer;
+    return answer
 }
