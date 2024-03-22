@@ -1,26 +1,26 @@
 function solution(n, computers) {
-    const visited = Array.from({length: n}, () => 0);
-    let answer = 0;
-
-    function bfs(node) {
+    const visited = Array.from({length:n}, ()=>0);
+    
+    const bfs = (node) => {
         const queue = [node];
-        while (queue.length) {
-            const current = queue.shift();
-            visited[current] = 1;
-            for (let i = 0; i < n; i++) {
-                if (computers[current][i] === 1 && !visited[i]) {
+        while(queue.length){
+            const idx = queue.shift();
+            visited[idx] = 1;
+            for(let i=0; i<n; i+=1){
+                if(computers[idx][i] === 1 && !visited[i]){
                     queue.push(i);
                 }
             }
         }
     }
-
-    for (let i = 0; i < n; i++) {
-        if (!visited[i]) {
+    
+    let answer = 0;
+    
+    for(let i=0; i<n; i+=1){
+        if(!visited[i]){
             bfs(i);
-            answer++;
+            answer += 1;
         }
     }
-    
-    return answer;
+    return answer
 }
