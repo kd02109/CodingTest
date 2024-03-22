@@ -1,32 +1,34 @@
 function solution(board) {
-    const boards = board.join('').split('');
-    const O = "O";
-    const X = "X"
-    
-    function getCounting(symbol){
-        return board.join('').split('').filter(item => item===symbol).length;
+    function getCnt(item, board){
+        let total = 0;
+        for(let i=0; i<board.length; i+=1){
+            for(let j=0; j<board.length; j+=1){
+                if(board[i][j] === item) total += 1; 
+            }
+        }
+        return total;
     }
-    const numO = getCounting(O);
-    const numX = getCounting(X);
     
-    if(numX > numO) return 0;
-    if(numO - numX > 1) return 0;
-   
-    function checkWin (symbol){
-        let possible = 0;
+    function countWin(item, board){
         const wins = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
+        const boards = board.join('');
+        let total = 0;
         wins.forEach(win => {
-            if(boards[win[0]] === symbol && boards[win[1]] === symbol && boards[win[2]] === symbol) possible +=1;
+            if(boards[win[0]] === item && boards[win[1]] === item && boards[win[2]] === item) total += 1;
         })
-        return possible;
+        return total
     }
     
-    const winO = checkWin(O);
-    const winX = checkWin(X);
+    let oWin = countWin("O", board);
+    let xWin = countWin("X", board);
+    let oCnt = getCnt("O", board);
+    let xCnt = getCnt("X", board);
+    console.log(oWin, xWin)
     
-    if(winO && winX) return 0
-    if(winO && numO - numX !== 1) return 0
-    if(winX && numO - numX !== 0) return 0
-    
+    if(xWin && xCnt !== oCnt) return 0;
+    if(oWin && oCnt <= xCnt) return 0;
+    if(oCnt-xCnt >= 2) return 0;
+    if(xCnt > oCnt) return 0;
+
     return 1;
 }
