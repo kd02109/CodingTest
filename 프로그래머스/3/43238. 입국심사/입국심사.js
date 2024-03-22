@@ -1,21 +1,22 @@
 function solution(n, times) {
-    times.sort((a,b)=> a-b)
-    let min = times[0]
-    let max = times[times.length-1]*n
-    
+    let min = 1;
+    let max = n * Math.max(...times);
+    let answer = max;
     while(min <= max){
         const mid = Math.floor((min+max)/2)
-        let count = 0;
-        
+
+        let people = 0;
         times.forEach(time => {
-            count += Math.floor(mid/time)
+            people += Math.floor(mid/time);
         })
         
-        if(count >= n){
-            max = mid-1
+        if(people >= n){
+            answer = mid;
+            max = mid - 1;
         }else{
-            min = mid+1
+            min = mid + 1;
         }
     }
-    return max+1
+    return answer;
 }
+
