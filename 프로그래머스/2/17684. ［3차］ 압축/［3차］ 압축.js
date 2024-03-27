@@ -1,28 +1,25 @@
+
+
 function solution(msg) {
-    const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').reduce((acc,cur,idx)=>{
-        acc[cur] = idx+1
-        return {...acc}
-    },{})
-    
     const answer = [];
-    let next = 1;
-    let num = 27;
-    
-    for(let i=0; i<msg.length; i+=next){
-        next = 1
-        let char = msg[i]
-        let nextChar = char + msg[i+next]
-        while(true){
-            if(alpha[char] && !alpha[nextChar]){
-                answer.push(alpha[char]);
-                alpha[nextChar] = num;
-                num+=1;
-                break;
-            }
-            next += 1;
-            char = nextChar;
-            nextChar = char+msg[i+next];
+    const alpha = ["A", "B", "C", "D","E","F","G","H", "I", "J","K","L","M","N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"].reduce((acc,cur,idx)=>{
+        acc[cur] = idx+1
+        return acc
+    }, {})
+    let num = 26;
+    for(let i=0; i<msg.length;){
+        let count=1;
+        let base = msg[i];
+        let next = msg[i] + msg[i+count]
+        while(alpha[base] && alpha[next]){
+            count += 1;
+            base = next;
+            next += msg[i+count];
         }
+        answer.push(alpha[base]);
+        num += 1;
+        alpha[next] = num; 
+        i += count
     }
     return answer;
 }
