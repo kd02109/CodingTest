@@ -1,8 +1,5 @@
 function solution(n, info) {
-    
-    if(info[0] === n) return [-1];
-    
-    var answer = [];
+    const answer = [];
     const board = [0,1,2,3,4,5,6,7,8,9,10].reduce((acc,cur,idx) => {
         acc[cur] = 10 - idx;
         return acc
@@ -29,6 +26,7 @@ function solution(n, info) {
         }
     }
     dfs(0,n,info,0,[]);
+    
     answer.sort((a,b)=> {
         if(b[0] === a[0]){
             return b[1].filter(item => item !==0).length - a[1].filter(item => item !==0).length
@@ -36,6 +34,6 @@ function solution(n, info) {
         return b[0]-a[0]
     });
     
-    if(answer[0][0] === 0) return [-1]
+    if(answer[0][0] <= 0) return [-1]
     return answer[0][1];
 }
