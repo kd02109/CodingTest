@@ -1,47 +1,45 @@
 function solution(relation) {
-    const idx = relation[0].map((_,idx) => idx);
-    const combination = [];
+    const idxArr = Array.from({length: relation[0].length}, (_, idx)=> idx);
+    const answer = [];
+    const combi = [];
     
-    function getCombi(arr,combi){
-        if(combi.length) combination.push(combi);
-        if(arr.length === 0) return;
-        arr.forEach((value, idx, arr) => {
-            const rest = arr.slice(idx+1);
-            getCombi(rest, [...combi , value]);
+    const combination = (arr,set) =>{
+        if(set.length) combi.push(set)
+        if(arr.length === 0) return
+        arr.forEach((value, idx)=>{
+            const newArr = arr.slice(idx+1);
+            combination(newArr,[...set, value]);
         })
     }
-    getCombi(idx, [])
+    combination(idxArr, []);
 
-    const answer = [];
+    combi.sort((a,b)=> a.length-b.length);
     
-    function checkUnique(combi){
+    const isUnique = (arr) => {
         const set = new Set();
         for(let i=0; i<relation.length; i+=1){
-            let base = ""
-            for(let j=0; j<combi.length; j+=1){
-                base += relation[i][combi[j]]
-            }
-            set.add(base);
+            let key = ""
+            for(let j=0; j<arr.length; j+=1) key += relation[i][arr[j]]
+            set.add(key)
         }
-        return [...set].length === relation.length;
+        if([...set].length === relation.length) return true;
+        return false;
     }
     
-    function checkMinimality(combi){
+    const checkMin = (answer, set) => {
         for(let i=0; i<answer.length; i+=1){
+            const base = answer[i];
             let count = 0;
-            let set = answer[i];
             for(let j=0; j<set.length; j+=1){
-                if(combi.includes(set[j])) count += 1;
+                if(base.includes(set[j])) count += 1;
             }
-            if(count === set.length) return false;
+            if(count === base.length) return false;
         }
         return true;
     }
     
-   combination.sort((a,b) => a.length - b.length);
-    combination.forEach((combi)=> {
-        if(checkUnique(combi) && checkMinimality(combi)) answer.push(combi);
+    combi.forEach(set => {
+        if(isUnique(set) && checkMin(answer, set)) answer.push(set)
     })
-
-    return answer.length;
+    return answer.length
 }
