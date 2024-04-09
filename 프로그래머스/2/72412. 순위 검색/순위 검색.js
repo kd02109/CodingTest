@@ -1,64 +1,49 @@
-function combi(personInfo,score, map){
-    function dfs(answer, arr){
-        if(map[answer]){
-            map[answer].push(score);
-        }else map[answer]= [score];
-        
-        if(arr.length === 0) return;
-        
-        for(let i=0; i<arr.length; i+=1){
-            const info = arr[i]
-            const newArr = arr.slice(i+1);
-            dfs(answer+info, newArr);
-        }
-    }
-    dfs("",personInfo);
-}
-
-function binSearch(values,score){
-    let min = 0;
-    let max = values.length;
-    while(min < max){
-        const mid = Math.floor((min+max)/2);
-        if(values[mid] >= score){
-            max = mid;
-        }else{
-            min = mid + 1;
-        }
-    }
-
-    return values.length - min
-}
-
-
 function solution(info, query) {
-    const keyMap = {};
-    const answer = [];
+    const infoObj = {};
     
-    info = info.map(item => item.split(' '));
-    
-    for(let i=0; i<info.length; i+=1){
-         const score = Number(info[i].pop());
-         const personInfo = info[i];
-        combi(personInfo, score, keyMap);
-    }
-    
-    for (let key in keyMap) keyMap[key].sort((a, b) => a - b);
-    
-    for(let i=0; i<query.length; i+=1){
-        const require = query[i]
-        const requireArr = require.replaceAll(" and", "").replaceAll('-','').split(' ');
-        const requireScore = Number(requireArr.pop());
-        const str = requireArr.join('');
-        let count = 0;
+    // 모든 경우의 수 찾기
+    const combi = (score, arr, info) => {
+        const key = arr.join("");
+        if(infoObj[key]) infoObj[key].push(score);
+        else infoObj[key] = [score] 
         
-        if(keyMap[str]){
-            const arr = keyMap[str];
-            count = binSearch(arr, requireScore);
-        }
-        answer.push(count);
+        if(info.length <= 0) return;
+        
+        info.forEach((value, idx) => {
+            const newArr = info.slice(idx+1);
+            combi(score, [...arr,value], newArr);
+        })
     }
-
-    return answer;
+    
+    info.forEach(person => {
+        const [lan, dev, year, food, score] = person.split(" ")
+        combi(Number(score), [], [lan,dev,year,food]);
+    })
+    
+    // 정렬
+    Object.keys(infoObj).forEach(key => {
+        infoObj[key].sort((a,b)=> a-b);
+    })
+    
+    const overValue = (arr, score) => {
+        let left = 0;
+        let right = arr.length;
+        while(left < right){
+            const mid = Math.floor((left+right)/2)
+            if(arr[mid] >= score) right = mid;
+            else left = mid + 1;
+        }
+        return arr.length - right;
+    }
+    
+    const answer = query.map(data => {
+        const arr = data.replaceAll(" and", "").replaceAll("-","").split(" ")
+        const score = Number(arr.pop());
+        const key = arr.join('')
+        const values = infoObj[key];
+        if(!values) return 0;
+        return overValue(values, score)
+    })
+    return answer
 }
 
