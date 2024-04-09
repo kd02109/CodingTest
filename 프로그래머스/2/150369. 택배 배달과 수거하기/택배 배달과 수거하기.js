@@ -1,38 +1,35 @@
 function solution(cap, n, deliveries, pickups) {
     let answer = 0;
     while(deliveries.length || pickups.length){
-        let dbox = cap, pbox = cap;
-        let dTrue = true, pTrue = true;
-        let dNum = 0, pNum = 0;
+        let dCap = cap;
+        let dLen = 0;
+        let pCap = cap;
+        let pLen = 0;
         
-        while(dbox >=0 && deliveries.length){
-            let box = deliveries.pop();
-            if(dTrue && box){
-                dNum = deliveries.length + 1;
-                dTrue = false;
+        while(dCap >=0 && deliveries.length){
+            const value = deliveries.pop();
+            if(value > 0 && dLen === 0){
+                dLen = deliveries.length + 1;
             }
-            
-            if(dbox - box >=0) dbox -= box;
-            else {
-                dbox -= box
-                deliveries.push(-1 * dbox);
+            if(dCap >= value) dCap -= value;
+            else{
+                dCap -= value;
+                deliveries.push(Math.abs(dCap));
             }
         }
         
-        while(pbox >=0 && pickups.length){
-            let box = pickups.pop();
-            if(pTrue && box){
-                pNum = pickups.length + 1;
-                pTrue = false;
+        while(pCap >=0 && pickups.length){
+            const value = pickups.pop();
+            if(value > 0 && pLen === 0){
+                pLen = pickups.length + 1;
             }
-            
-            if(pbox - box >=0) pbox -= box;
-            else {
-                pbox -= box
-                pickups.push(-1 * pbox);
+            if(pCap >= value) pCap -= value;
+            else{
+                pCap -= value;
+                pickups.push(Math.abs(pCap));
             }
         }
-        answer = answer + Math.max(dNum, pNum) * 2;
+        answer += Math.max(dLen, pLen) * 2
     }
     return answer
 }
