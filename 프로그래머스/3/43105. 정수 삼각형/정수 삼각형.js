@@ -1,11 +1,9 @@
 function solution(triangle) {
-    var answer = 0;
-    const memo = Array.from({length: triangle.length}, ()=> new Array(triangle.length).fill(-1))
-    const dfs = (row, col) => {
-        if(row === triangle.length) return 0
-        if(memo[row][col] !== -1) return memo[row][col] 
-        memo[row][col]  =  triangle[row][col] + Math.max(dfs(row+1, col), dfs(row+1, col+1));
-        return memo[row][col]
+    const len = triangle.length - 2
+    for(let i=len; i>=0; i -= 1){
+        for(let j=0; j<=i; j+=1){
+            triangle[i][j] += Math.max(triangle[i+1][j], triangle[i+1][j+1]);
+        }
     }
-    return dfs(0, 0);
+    return triangle[0][0]
 }
