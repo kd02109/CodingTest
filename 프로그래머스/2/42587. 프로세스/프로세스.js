@@ -1,14 +1,13 @@
 function solution(priorities, location) {
+    priorities = priorities.map((priority,idx) => [priority, idx]);
     let answer = 0;
-    const maps = priorities.map((item, idx) => [idx,item]);
-    
-    while(true){
-        const [idx, value] = maps.shift();
-        if(maps.every(item => item[1] <= value)){
+    while(priorities.length){
+        const [priority, idx] = priorities.shift();
+        if(priorities.every(([value, index]) => value <= priority)){
             answer += 1;
-            if(location === idx) return answer
+            if(idx === location) return answer;
         }else{
-            maps.push([idx,value]);
+            priorities.push([priority, idx]);
         }
     }
 }
