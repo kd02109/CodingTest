@@ -1,48 +1,44 @@
 function solution(land) {
     let answer = 0;
-    const visited = Array.from({length: land.length}, ()=>new Array(land[0].length).fill(0));
-    const map = Array.from({length: land[0].length}, ()=>0);
-    let oilIdx = 1;
-    const obj = {};
+    const visited = Array.from({length: land.length}, ()=>new Array(land[0].length).fill(0))
+    const memo = {}
+    let visitedIdx = 1;
     
-    const calculateOil = (y, x, land) => {
-        let tempTotal = 0;
-        const dx = [0,0,1,-1];
-        const dy = [1,-1,0,0];
-        visited[x][y] = oilIdx
-        const queue = [[x,y]];
+    const bfs = (row,col) => {
+        const dx = [1,-1,0,0];
+        const dy = [0,0,1,-1];
+        const queue = [[row,col]];
+        visited[row][col] = visitedIdx;
+        if(!memo[visitedIdx]) memo[visitedIdx] = 1;
+        
         while(queue.length){
-            let [x,y] = queue.shift();
-            if(land[x][y] === 1) tempTotal += 1;
+            const [x,y] = queue.shift();
             for(let i=0; i<dx.length; i+=1){
-                let nx = x+dx[i];
-                let ny = y+dy[i];
-                if(nx >=0 && nx< land.length && ny>=0 && ny < land[0].length && land[nx][ny] === 1 && visited[nx][ny] === 0){
-                    queue.push([nx,ny]);
-                    visited[nx][ny] = oilIdx
+                let nx = x + dx[i];
+                let ny = y + dy[i];
+                if(nx>=0 && nx<land.length && ny>=0 && ny<land[0].length && land[nx][ny] === 1 && visited[nx][ny] === 0){
+                    memo[visitedIdx] += 1;
+                    visited[nx][ny] = visitedIdx;
+                    queue.push([nx, ny]);
                 }
             }
         }
-        obj[oilIdx] = tempTotal;
     }
-
-    for(let i=0; i<land[0].length; i+=1){
-        let possible = 0;
-        const set = new Set();
-        for(let j=0; j<land.length; j+=1){
-            if(land[j][i] === 1 && visited[j][i] === 0){
-                possible += calculateOil(i,j,land);
-                oilIdx += 1;
+    
+    for(let y=0; y<land[0].length; y+=1){
+        const colSet = new Set();
+        for(let x=0; x<land.length; x+=1){
+            if(land[x][y] === 1 && visited[x][y] === 0){
+                bfs(x,y);
+                visitedIdx += 1;
             }
-            if(visited[j][i] !==0){
-                set.add(visited[j][i])
+            if(visited[x][y]){
+                colSet.add(visited[x][y]);
             }
         }
-        [...set].forEach(idx => {
-            map[i] += obj[idx]
-        })
-        
+
+        const colSum = [...colSet].reduce((acc,cur)=> acc+memo[cur],0);
+        answer = Math.max(answer, colSum);
     }
-   
-    return Math.max(...map);
+    return answer;
 }
