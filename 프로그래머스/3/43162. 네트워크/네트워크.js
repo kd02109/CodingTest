@@ -1,20 +1,21 @@
 function solution(n, computers) {
-    const visited = Array.from({length:n}, ()=>0);
+    const visited = new Array(n).fill(0);
+    let answer = 0;
     
     const bfs = (node) => {
+        visited[node] = 1;
         const queue = [node];
+        
         while(queue.length){
-            const idx = queue.shift();
-            visited[idx] = 1;
-            for(let i=0; i<n; i+=1){
-                if(computers[idx][i] === 1 && !visited[i]){
+            const start = queue.shift()
+            for(let i=0; i<computers[start].length; i+=1){
+                if(computers[start][i] === 1 && !visited[i]){
+                    visited[i] = 1;
                     queue.push(i);
                 }
             }
         }
     }
-    
-    let answer = 0;
     
     for(let i=0; i<n; i+=1){
         if(!visited[i]){
@@ -22,5 +23,6 @@ function solution(n, computers) {
             answer += 1;
         }
     }
-    return answer
+    
+    return answer;
 }
