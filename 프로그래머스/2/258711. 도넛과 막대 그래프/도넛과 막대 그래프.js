@@ -1,47 +1,46 @@
 function solution(edges) {
+    const answer = [0,0,0,0]
     const makeMap = (arr) => {
-        return arr.reduce((acc, cur) => {
-            const [key , end] = cur;
-            // [give, get]
-            if(!acc.has(key)) acc.set(key, [0,0]);
-            if(!acc.has(end)) acc.set(end, [0,0]);
+        const map = new Map();
+        arr.forEach(value => {
+            const [start, end] = value;
+            if(!map.has(start)) map.set(start, [0,0]);
+            if(!map.has(end)) map.set(end, [0,0]);
             
-            const [keyGive, keyGet] = acc.get(key);
-            const [endGive, endGet] = acc.get(end);
-            
-            // 출발 지점과 도착 지점이 같을때
-            if(key === end){
-                acc.set(key, [keyGive+1, keyGet+1])
-                return acc
+            let [giveStart, getStart] = map.get(start);
+            let [giveEnd, getEnd] = map.get(end);
+            if(start === end){
+                map.set(start, [giveStart+1, getStart+1]);
             }
             
-            acc.set(key, [keyGive+1, keyGet]);
-            acc.set(end, [endGive, endGet+1]);
-            return acc
-        }, new Map())
+            if(start !== end){
+                map.set(start, [giveStart+1, getStart]);
+                map.set(end, [giveEnd, getEnd+1]);
+            }
+        })
+        return map;
     }
+    const map = makeMap(edges);
     
-    const checkMap = (map) => {
-        const answer = Array.from({length : 4}, ()=>0)
-        for(let value of map){
-            const [key, count] = value;
+    const makeAnswer = (map) => {
+        const arr = [...map];
+        let pointCount = 0;
+        arr.forEach(value => {
+            const [node, count] = value;
             const [give, get] = count;
-            if(give >=2 && get === 0){
-                answer[0] = key
-            }else if(give === 0){
+            if(give >= 2 && get === 0){
+                answer[0] = node;
+                pointCount = give;
+            }
+            if(give === 0){
                 answer[2] += 1;
-            }else if(give >= 2 && get >= 2){
+            }
+            if(give >= 2 && get >= 2){
                 answer[3] += 1;
             }
-        }
-        // 도넛 개수 구하기 
-        // 정점의 출발 노드 개수 - 막대 - 팔자
-        const startGive = map.get(answer[0])[0];
-        answer[1] = startGive - answer[2] - answer[3];
-        return answer
+        })
+        answer[1] = pointCount - answer[2] - answer[3];
     }
-    
-    const map = makeMap(edges);
-    const answer = checkMap(map);
+    makeAnswer(map);
     return answer;
 }
