@@ -1,47 +1,37 @@
 function solution(friends, gifts) {
-    var answer = 0;
-    // 각 친구 이름에 맞추어 인덱스 값 주기 
-    // 인덱스에 맞추어 0으로 초기화 해당 인덱스 키 값은 선물 지수 기록
-    const friendMap = friends.reduce((acc, cur, idx)=> {
+    let answer = 0;
+    const map = Array.from({length: friends.length}, ()=> new Array(friends.length).fill(0));
+    const obj = friends.reduce((acc, cur, idx) => {
         acc[cur] = idx;
-        acc[idx] = cur;
-        return acc
-    }, {})
-
-    const giftMap = Array.from({length:friends.length}, ()=> new Array(friends.length).fill(0));
+        acc[idx] = 0;
+        return acc;
+    }, {});
     
-    // 준 선물 기록
-    gifts.map(gift => {
+    gifts.forEach(gift => {
         const [give, get] = gift.split(' ');
-        const giveIdx = friendMap[give];
-        const getIdx = friendMap[get];
-        giftMap[giveIdx][getIdx] += 1;
+        const giveIdx = obj[give];
+        const getIdx = obj[get];
+        map[giveIdx][getIdx] += 1;
     })
     
-    // 선물 지수 기록하기 
-    for(let i=0; i<giftMap.length; i+=1){
-        const giveTotal = giftMap[i].reduce((acc,cur) => acc+cur);
-        let gaveTotal = 0;
-        for(let j=0; j<giftMap.length; j+=1){
-            gaveTotal += giftMap[j][i]
+    for(let col=0; col<map.length; col+=1){
+        const totalGive = map[col].reduce((acc,cur)=> acc+cur);
+        let totalGet = 0;
+        for(let row=0; row<map.length; row+=1){
+            totalGet += map[row][col];
         }
-        friendMap[i] = giveTotal - gaveTotal;
+        obj[col] = totalGive - totalGet;
     }
     
-    // 각 사람별 받을 선물 수 기록하기
-    for(let i=0; i<giftMap.length; i+=1){
-        let nextGift = 0;
-        for(let j=0; j<giftMap.length; j+=1){
-            if(i===j) continue;
-            const give = giftMap[i][j];
-            const get = giftMap[j][i];
-            const giveGiftIdx = friendMap[i];
-            const getGiftIdx = friendMap[j];
-            if(give > get) nextGift += 1;
-            else if(give === get && giveGiftIdx > getGiftIdx) nextGift += 1;
+    for(let i=0; i<map.length; i+=1){
+        let possible = 0;
+        for(let j=0; j<map.length; j+=1){
+            if( i === j ) continue;
+            if(map[i][j] === map[j][i] && obj[i] > obj[j]) possible += 1;
+            if(map[i][j] > map[j][i]) possible += 1;
+            
         }
-        answer = Math.max(answer, nextGift);
+        answer = Math.max(answer, possible);
     }
-    
     return answer;
 }
