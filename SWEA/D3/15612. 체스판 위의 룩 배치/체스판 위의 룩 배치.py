@@ -15,8 +15,7 @@ def solution(board):
             # 같은 열에 룩이 없으니까 pass
             elif board[i][j] == 'O' and not column[j]:
                 column[j] = 1
-    else:
-        return 'yes'
+    return 'yes'
 
 
 T = int(input())
