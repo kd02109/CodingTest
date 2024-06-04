@@ -4,17 +4,16 @@ T = int(input())
 
 for tc in range(1, T+1):
     lst_str = list(input())
-    idx = 0
+    obj = {}
     answer = ""
-    while idx < len(lst_str):
-        char = lst_str[idx]
-        if char in lst_str[idx+1:]:
-            lst_str.pop(idx)
-            char_idx = lst_str.index(char)
-            lst_str.pop(char_idx)
+    for char in lst_str:
+        if char in obj:
+            obj[char] += 1
         else:
-            answer += lst_str[idx]
-            idx += 1
+            obj[char] = 1
+    for key in obj:
+        if obj[key] % 2 != 0:
+            answer += key
     if answer == "":
         print(f'#{tc} Good')
     else:
