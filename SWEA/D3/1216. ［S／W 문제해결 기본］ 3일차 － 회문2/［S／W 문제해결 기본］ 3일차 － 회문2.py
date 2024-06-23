@@ -24,7 +24,7 @@ for test_case in range(1, T + 1):
     arr2 = [''.join(x) for x in zip(*arr1)] # string
 
     for leng in range(N, 1, -1):    # 찾으면 최대값
-         # if is_pal(arr1, leng) or is_pal(arr2, leng):
-         if is_pal_idx(arr1, leng) or is_pal_idx(arr2, leng):
+         if is_pal(arr1, leng) or is_pal(arr2, leng):
+         #if is_pal_idx(arr1, leng) or is_pal_idx(arr2, leng):
              break
     print(f'#{_} {leng}')
