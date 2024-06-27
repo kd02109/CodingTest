@@ -1,26 +1,24 @@
-# 새종이
-
-
-WIDTH = 1000
-
 N = int(input())
-lst = [list(map(int, input().split())) for _ in range(N)]
-board = [[0]*(WIDTH+1) for _ in range(WIDTH+1)]
-ans = [0] * (N+1)
-for value in lst:
-    [value[0], value[1]] = [WIDTH - value[1]-value[3]+1, value[0]]
-    [value[2], value[3]] = [value[0] + value[3], value[1]+value[2]]
+arr = [[0]*1001 for _ in range(1001)]
+for n in range(1, N+1):
+    sj, si, w, h = map(int, input().split())
+    for i in range(si, si+h):
+        # 하나씩 표시하는 방법
+        # for j in range(sj, sj+w):   # 해당 번호 색종이 숫자를 영역에 표시
+        #     arr[i][j]=n
+        # lst단위로 표시
+        arr[i][sj:sj+w] = [n]*w
 
-for i in range(N-1,-1,-1):
-    idx = i+1
-    cnt = 0
-    [px,py,nx,ny] = lst[i]
-    for x in range(px, nx):
-        for y in range(py,ny):
-            if board[x][y] == 0:
-                board[x][y] = idx
-                cnt += 1
-    ans[idx] = cnt
+# [2] cnts: 빈도수 배열 사용해서, arr한 번만 순회
+cnts = [0]*(N+1)
+for lst in arr:
+    for n in lst:
+        cnts[n] += 1
+print(*cnts[1:], sep='\n')
 
-for i in range(1, len(ans)):
-    print(ans[i])
+# # [1] 색종이 개수별로 전체 arr를 순회: 시간 오래걸림
+# for n in range(1, N+1):
+#     cnt = 0
+#     for lst in arr:
+#         cnt += lst.count(n)
+#     print(cnt)
